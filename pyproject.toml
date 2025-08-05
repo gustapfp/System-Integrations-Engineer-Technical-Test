@@ -15,6 +15,9 @@ python-decouple = "3.8"
 loguru = "^0.7.2"
 motor = "^3.1.1"            # Async MongoDB driver
 pytest = "^7.4.0"
+pymongo = "^4.13.2"
+bson = "^0.5.10"
+pydantic = "^2.11.7"
 
 [tool.poetry.group.formatting.dependencies]
 black = "^23.3.0"
