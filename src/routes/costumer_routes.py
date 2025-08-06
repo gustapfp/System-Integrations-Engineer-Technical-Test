@@ -21,7 +21,6 @@ class CostumerERPRoute:
         """Fetch a workorder from the customer system."""
         full_path = os.path.join(self.client_get_url, f"{orderNo}.json")
         json_file = await self.IOHelper.read_json(full_path)
-       
         if json_file is None:
             logger.error(f"Workorder with orderNo {orderNo} not found.")
             return None
