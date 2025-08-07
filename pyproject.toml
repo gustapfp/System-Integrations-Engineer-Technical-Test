@@ -15,12 +15,17 @@ python-decouple = "3.8"
 loguru = "^0.7.2"
 motor = "^3.1.1"            # Async MongoDB driver
 pytest = "^7.4.0"
+pytest-asyncio = "^0.21.1"  # Async support for pytest
 pydantic = "^2.11.7"
 pymongo = "^4.13.2"
 sentry-sdk = "^2.34.1"
 
 [tool.poetry.group.formatting.dependencies]
 black = "^23.3.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest-asyncio = "^0.21.1"
 
 [tool.black]
 line-length = 88
@@ -31,3 +36,11 @@ extend-exclude = '''
   | _build
 )/
 '''
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = ["-v", "--tb=short"]

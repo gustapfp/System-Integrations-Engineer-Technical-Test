@@ -7,15 +7,14 @@ import asyncio
 from schemas.customer_schema import CustomerSystemWorkorderSchema # Changed this line
 from CONSTS import PROJECT_ROOT
 from pydantic import ValidationError
-logger = logging.getLogger(__name__)
-DATA_INBOUND_DIR = os.getenv("DATA_INBOUND_DIR")
-DATA_OUTBOUND_DIR = os.getenv("DATA_OUTBOUND_DIR")
 from services.tracos_service import TracOsService
+logger = logging.getLogger(__name__)
+
  
 class CostumerERPRoute:
     def __init__(self):
-        self.client_get_url = DATA_INBOUND_DIR 
-        self.client_post_url = str(DATA_OUTBOUND_DIR)
+        self.client_get_url = str(os.getenv("DATA_INBOUND_DIR", "data/inbound"))
+        self.client_post_url =  str(os.getenv("DATA_OUTBOUND_DIR", "data/outbound"))
         self.IOHelper = IOHelper()
         self.tracos_service = TracOsService()
 
@@ -31,19 +30,15 @@ class CostumerERPRoute:
             return None
         return json_file.model_dump()
 
-    async def get_costumer_workorders() -> List[CustomerSystemWorkorderSchema]:
-        """Fetch all workorders from the customer system."""
-        pass
-
     async def post_costumer_workorder(
         self, workorder: CustomerSystemWorkorderSchema
     ) -> dict: 
-        full_path = os.path.join(self.client_post_url, f"{workorder.orderNo}.json")
-
         if workorder is None:
-            logger.error(f"Workorder with orderNo {workorder['orderNo']} not found.")
+            logger.error(f"Workorder not found.")
             return None
+
         try:
+            full_path = os.path.join(self.client_post_url, f"{workorder.orderNo}.json")
             logger.info("Inserting json file in Client's ERP...")
             await self.IOHelper.write_json(
                 file_path=full_path,

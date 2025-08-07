@@ -74,39 +74,3 @@ class PayloadTranslator:
         else:
             return "in_progress"
 
-
-if __name__ == "__main__":
-    # Example usage
-    from datetime import datetime
-    translator = PayloadTranslator()
-    customer_payload = CustomerSystemWorkorderSchema(
-        orderNo=123,
-        isActive=True,
-        isCanceled=False,
-        isDeleted=False,
-        isDone=False,
-        isOnHold=False,
-        isPending=False,
-        isSynced=False,
-        summary="Example workorder",
-        creationDate=datetime.now(),
-        lastUpdateDate=datetime.now(),
-    )
-    tracos_payload = translator.from_costumer_to_tracos(customer_payload)
-    print(tracos_payload.model_dump())
-
-    # Client -> TracOs Test
-    # tracos_payload = TracOSWorkorderSchema(
-    #     _id=ObjectId(),
-    #     number=1,
-    #     status="pending",
-    #     title="Sample Workorder",
-    #     description="This is a sample workorder.",
-    #     createdAt=datetime.now(),
-    #     updatedAt=datetime.now(),
-    #     deleted=False,
-    
-    # )
-    print("-------")
-    costumer_payload = translator.from_tracos_to_costumer(tracos_payload)
-    print(costumer_payload.model_dump())
