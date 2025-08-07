@@ -5,7 +5,7 @@ import logging
 from typing import List, Union
 import asyncio
 from schemas.customer_schema import CustomerSystemWorkorderSchema # Changed this line
-from CONSTS import PROJECT_ROOT
+
 from pydantic import ValidationError
 from services.tracos_service import TracOsService
 logger = logging.getLogger(__name__)

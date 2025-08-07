@@ -30,7 +30,6 @@ async def test_insert_workorder_success(tracos_service, sample_workorder):
     assert result is not None
     assert result.number == sample_workorder.number
     assert result.title == sample_workorder.title
-    
 
     db_workorder = await tracos_service.get_workorder(sample_workorder.number)
     assert db_workorder is not None
