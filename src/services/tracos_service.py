@@ -7,21 +7,16 @@ import logging
 import os
 from bson.objectid import ObjectId
 from pydantic import ValidationError
-MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
-MONGO_DATABASE = os.getenv("MONGO_DATABASE", "tractian")
-MONGO_COLLECTION = os.getenv("MONGO_COLLECTION", "workorders")
 
 logger = logging.getLogger(__name__)
 
-# TODO: Add one method update the workorder to isSynced = true and set a  timestamp
-# TODO: Add a method to insert many workorders
-# TODO: Add a method to get all workorderstimestamp
+
 class TracOsService:
     """Service to handle operations related to TracOs."""
     def __init__(self):
-        self.client = AsyncIOMotorClient(MONGO_URI)
-        self.db = self.client[MONGO_DATABASE]
-        self.collection = self.db[MONGO_COLLECTION]
+        self.client = AsyncIOMotorClient(os.getenv("MONGO_URI", "mongodb://localhost:27017"))
+        self.db = self.client[os.getenv("MONGO_DATABASE", "tractian")]
+        self.collection = self.db[os.getenv("MONGO_COLLECTION", "workorders")]
     
     async def get_workorder(self, number: int) -> TracOSWorkorderSchema | None:
         """Get workorder from the TracOs database."""
@@ -47,6 +42,7 @@ class TracOsService:
             return None
 
     async def update_workorder(self, number: int) -> None:
+        """Insert workorder fields isSynced and  syncedAt in the TracOs database."""
         try:
             logger.info(f"Updating workorder number: {number}...")
             await self.collection.update_one(
@@ -69,26 +65,6 @@ class TracOsService:
             
         
         
-if __name__ == "__main__":
-    from datetime import datetime
-    from bson import ObjectId
-    import asyncio
-    tracos_service = TracOsService()
-    sample_workorder = TracOSWorkorderSchema(
-        _id=ObjectId(),
-        number=1,
-        status="pending",
-        title="Sample Workorder",
-        description="This is a sample workorder.",
-        createdAt=datetime.now(),
-        updatedAt=datetime.now(),
-        deleted=False,
-        isSynced=False
-    )
-    # asyncio.run(tracos_service.insert_workorder(sample_workorder))
-    asyncio.run(tracos_service.update_workorder(
-        1
-    ))
 
 
 
