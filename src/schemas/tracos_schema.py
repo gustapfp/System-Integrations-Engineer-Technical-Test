@@ -14,6 +14,8 @@ class TracOSWorkorderSchema(BaseModel):
     updatedAt: datetime
     deleted: bool = False
     deletedAt: Optional[datetime] = None
+    isSynced: bool = False
+    syncedAt: Optional[datetime] = None 
 
     model_config = ConfigDict(
         arbitrary_types_allowed = True,
