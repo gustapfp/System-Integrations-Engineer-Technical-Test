@@ -147,12 +147,7 @@ PYTHONPATH=src poetry run pytest tests/test_costumer.py
 }
 ```
 
-## 🛡️ Resilience Features
 
-- **Error handling**: Graceful handling of I/O errors, corrupted files, and permission issues
-- **MongoDB retry logic**: Automatic reconnection for database failures
-- **Clear logging**: Informative logs without unreadable stack traces
-- **Batch processing**: Process multiple workorders with individual error isolation
 
 ## 🧪 Testing
 
