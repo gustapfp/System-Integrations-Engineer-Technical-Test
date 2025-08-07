@@ -1,3 +1,4 @@
+from pydantic import BaseModel
 import pytest
 from datetime import datetime
 import os
@@ -42,9 +43,9 @@ async def test_get_costumer_workorder_by_order_number(costumer_route):
 
     result = await costumer_route.get_costumer_workorder_by_order_number(1)
     assert result is not None
-    assert isinstance(result, dict)
-    assert "orderNo" in result
-    assert "summary" in result
+    assert isinstance(result, BaseModel)
+    assert hasattr(result, "orderNo")
+    assert hasattr(result, "summary")
 
     result = await costumer_route.get_costumer_workorder_by_order_number(99999)
     assert result is None

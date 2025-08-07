@@ -28,7 +28,7 @@ class CostumerERPRoute:
         if json_file is None:
             logger.error(f"Workorder with orderNo {orderNo} not found.")
             return None
-        return json_file.model_dump()
+        return json_file
 
     async def post_costumer_workorder(
         self, workorder: CustomerSystemWorkorderSchema

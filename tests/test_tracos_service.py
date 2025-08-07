@@ -20,7 +20,9 @@ def sample_workorder():
         title="Test Workorder",
         description="This is a test workorder",
         createdAt=datetime.now(timezone.utc),
-        updatedAt=datetime.now(timezone.utc)
+        updatedAt=datetime.now(timezone.utc),
+        isSynced=False,
+        syncedAt=None
     )
 
 @pytest.mark.asyncio
@@ -32,9 +34,9 @@ async def test_insert_workorder_success(tracos_service, sample_workorder):
     assert result.title == sample_workorder.title
     
 
-    db_workorder = await tracos_service.get_workorder(sample_workorder.number)
+    db_workorder = await tracos_service.get_workorder_by_number(sample_workorder.number)
     assert db_workorder is not None
-    assert db_workorder["number"] == sample_workorder.number
+    assert db_workorder.number == sample_workorder.number
 
 
 
@@ -45,11 +47,12 @@ async def test_update_workorder_success(tracos_service, sample_workorder):
     
     await tracos_service.update_workorder(sample_workorder.number)
 
-    updated_workorder = await tracos_service.get_workorder(sample_workorder.number)
+    updated_workorder = await tracos_service.get_workorder_by_number(sample_workorder.number)
     assert updated_workorder is not None
-    assert updated_workorder["isSynced"] is True
-    assert "syncedAt" in updated_workorder
-    assert updated_workorder["syncedAt"] is not None
+    assert updated_workorder.isSynced is True
+
+    assert hasattr(updated_workorder, "syncedAt")
+    assert updated_workorder.syncedAt is not None
 
 @pytest.mark.asyncio
 async def test_update_nonexistent_workorder(tracos_service):

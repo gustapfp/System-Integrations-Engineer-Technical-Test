@@ -18,11 +18,11 @@ class TracOsService:
         self.db = self.client[os.getenv("MONGO_DATABASE", "tractian")]
         self.collection = self.db[os.getenv("MONGO_COLLECTION", "workorders")]
     
-    async def get_workorder(self, number: int) -> TracOSWorkorderSchema | None:
+    async def get_workorder_by_number(self, number: int) -> TracOSWorkorderSchema | None:
         """Get workorder from the TracOs database."""
         workorder = await self.collection.find_one({"number":number})
         logger.info(f"Workorder number {number} found in the TracOs database.")
-        return workorder
+        return TracOSWorkorderSchema(**workorder)
     
     async def insert_workorder(self, workorder: TracOSWorkorderSchema) -> TracOSWorkorderSchema | None:
         """Insert workorder in the TracOs database."""
