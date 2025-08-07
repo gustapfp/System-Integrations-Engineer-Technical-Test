@@ -45,7 +45,7 @@ class TracOsService:
         else:
             logger.error(f"Error inserting workorder: {e}")
             return None
-    # TODO: Improve typing here
+
     async def update_workorder(self, number: int) -> None:
         try:
             logger.info(f"Updating workorder number: {number}...")

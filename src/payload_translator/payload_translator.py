@@ -23,10 +23,11 @@ class PayloadTranslator:
                 status=tracos_status,
                 title=f"Workorder {payload.orderNo}",
                 description=payload.summary,
-                createdAt=payload.creationDate.astimezone().isoformat(),
-                updatedAt=payload.lastUpdateDate.astimezone().isoformat(),
+                 
+                createdAt=payload.creationDate.astimezone().isoformat().replace('+00:00', 'Z'),
+                updatedAt=payload.lastUpdateDate.astimezone().isoformat().replace('+00:00', 'Z'),
                 deleted=True if payload.isDeleted else False,
-                deletedAt=payload.deletedDate.astimezone().isoformat() if payload.deletedDate else None,
+                deletedAt=payload.deletedDate.astimezone().isoformat().replace('+00:00', 'Z') if payload.deletedDate else None,
                 isSynced=payload.isSynced
             )
         except ValidationError as e:
